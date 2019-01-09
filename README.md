@@ -300,7 +300,32 @@ parseInt("08", 10) === 8 // For base 10
 
 
 
-[TOC]
+
+
+# Classes
+
+A blueprint for creating objects with pre-defined properties and methods
+
+```javascript
+class Rectangle {
+  constructor(height, width) {
+    this.height = height;
+    this.width = width;
+  }
+}
+```
+
+## Constructor
+
+The `constructor` method is a special method for creating and initializing an object created with a `class`. There can only be one special method with the name "constructor" in a class. A `SyntaxError` will be thrown if the class contains more than one occurrence of a `constructor` method.
+
+A constructor can use the `super` keyword to call the constructor of the super class.
+
+## Static
+
+The `static` keyword defines a static method for a class. Static methods aren't called on instances of the class. Instead, they're called on the class itself. These are often utility functions, such as functions to create or clone objects.
+
+
 
 # Object methods
 
@@ -600,6 +625,51 @@ console.log(array1.findIndex(findFirstLargeNumber));
 
 ```
 
+## Array.from()
+
+Can be use to create a new set of tuples
+
+```javascript
+let container = Array.from({length: 10}, () => []);
+console.log(container);
+/* 
+(10) [Array(0), Array(0), Array(0), Array(0), Array(0), Array(0), Array(0), Array(0), Array(0), Array(0)]
+0: []
+1: []
+2: []
+3: []
+4: []
+5: []
+6: []
+7: []
+8: []
+9: []
+*/
+```
+
+## .concat()
+
+The `concat()` method is used to merge two or more arrays. This method does not change the existing arrays, but instead returns a new array
+
+**Concat tuples:**
+
+```javascript
+// How to concat a tuple
+let tuple = [[1,2], [3, [4,5]]];
+tuple = [].concat(...tuple);
+// It'll need to be run again because of the nested tuple at [4,5]
+tuple = [].concat(...tuple);
+```
+
+## .flat()
+
+The `flat()` method creates a new array with all sub-array elements concatenated into it recursively up the specified depth
+
+```javascript
+var newArray = arr.flat([depth]); 
+// defaults to depth of 1
+```
+
 
 
 ------
@@ -622,7 +692,11 @@ In canary testing, a small subset of end users servers as a test group for updat
 
 ![canary_testing](https://cdn.ttgtmedia.com/rms/onlineImages/canary_testing.jpg)
 
-# Sorting Algorithms
+# Comparison Sorting Algorithms
+
+A **comparison sort** is a type of [sorting algorithm](https://en.wikipedia.org/wiki/Sorting_algorithm) that only reads the list elements through a single abstract comparison operation (often a "less than or equal to" operator or a [three-way comparison](https://en.wikipedia.org/wiki/Three-way_comparison)) that determines which of two elements should occur first in the final sorted list. 
+
+------
 
 Sorting is the process of rearranging the items in a collection (e.g. an array) so that the items are in some kind of order
 
@@ -679,6 +753,8 @@ Builds up the sort by gradually creating a larger left half which is always sort
 
 **Big O:** *O(n^2)*
 
+*Note: Since insertion sort has 1 side already sorted, it can continue to work as new stream of data gets inputted*
+
 ![Insertion Sort GIF](https://upload.wikimedia.org/wikipedia/commons/9/9c/Insertion-sort-example.gif)
 
 **Pseudocode:**
@@ -686,7 +762,70 @@ Builds up the sort by gradually creating a larger left half which is always sort
 ```javascript
 // 1. Start by picking the second element in the array
 // 2. Now compare the second element with the one before it and swap if necessary
-// 3. Continue to the next element and if it is in the incorrect order, iterate through the sorted portion(i.e.  the left side) to place the element in the correct place
+// 3. Continue to the next element and if it is in the incorrect order, iterate through the sorted portion(i.e. the left side) to place the element in the correct place
 // 4. Repeat until the array is sorted
 ```
+
+
+
+## Merge Sort
+
+Merge sort works by decomposing an array into smaller arrays of 0 or 1 elements, then building up a newly sorted array
+
+**Big O:** *O(n log n) with space complexity of O(n)*
+
+![Merge Sort GIF](https://codepumpkin.com/wp-content/uploads/2017/10/MergeSort_Avg_case.gif)
+
+**Pseudocode:**
+
+Part 1: Merging/Comparing Arrays
+
+```javascript
+// 1. Create an empty array, take a look at the smallest values in each input array
+// 2. While there are still values we haven't looked at...
+//    a. If the value in the first array is *smaller* than the value in the second
+//       array, push the value in the first array inbto our results and move on to the 
+//       next value in the first array.
+//    b. If the value in the first array is *larger* than the value in the second
+//       array, push the value in the second array into our results and move on to the
+//       next value in the second array.
+//    c. Once we exhaust one array, push in all remaining values from the other array.
+```
+
+Part 2: Splitting arrays
+
+```javascript
+// 1. Break up the array into halves until you have arrays that are empty or have one
+//    element
+// 2. Once you have smaller sorted arrays, merge those arrays with other sorted arrays
+//    until you are back at the full length of the array
+// 3. Once the array has been marged back together, return the merged (and sorted!)
+//    array
+```
+
+
+
+## Quick Sort
+
+Quick sort work by selecting one element (called the "pivot") and finding the index where the pivot should end up in the sorted array. Once the pivot is positioned appropriately, quick sort can be applied on either side of the pivot
+
+**Big O:** *O(n log n) with space complexity of O(log n)*
+
+![Quick Sort GIF](https://www.tutorialspoint.com/data_structures_algorithms/images/quick_sort_partition_animation.gif)
+
+------
+
+[TOC]
+
+# Integer Sort
+
+**Integer sorting** is the algorithmic problem of [sorting](https://en.wikipedia.org/wiki/Sorting_algorithm) a collection of data values by numeric keys, each of which is an [integer](https://en.wikipedia.org/wiki/Integer). 
+
+## Radix Sort
+
+Radix sort is a special sorting algorithm that works on lists of numbers. It never makes comparisons between elements! It exploits the fact that information about the size of a number is encoded in the number of digits. More digits means a bigger number!
+
+**Big O:** *O(nk) Note: because of how computers store numbers in memory, radix sort is theoretically O(n log n)*
+
+*Source: [Efficiency](https://en.wikipedia.org/wiki/Radix_sort#Efficiency)*
 
