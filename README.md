@@ -298,7 +298,7 @@ parseInt("08", 10) === 8 // For base 10
 
 ------
 
-
+[TOC]
 
 
 
@@ -324,6 +324,31 @@ A constructor can use the `super` keyword to call the constructor of the super c
 ## Static
 
 The `static` keyword defines a static method for a class. Static methods aren't called on instances of the class. Instead, they're called on the class itself. These are often utility functions, such as functions to create or clone objects.
+
+```javascript
+class Cow {
+    constructor(color){
+        this.color = color;
+    }
+    static moo() { 
+        return 'meow!!';
+        // this method stays with the class 
+        // and won't be passed on to the new instances created 
+        // (won't be passed on to the children)
+    }
+}
+
+var brownCow = new Cow('yellow');
+
+Cow.moo();
+// returns 'meow!!'
+
+brownCow.color;
+// returns 'yellow'
+
+brownCow.moo();
+// brown.moo is not a function
+```
 
 
 
@@ -825,7 +850,382 @@ Quick sort work by selecting one element (called the "pivot") and finding the in
 
 Radix sort is a special sorting algorithm that works on lists of numbers. It never makes comparisons between elements! It exploits the fact that information about the size of a number is encoded in the number of digits. More digits means a bigger number!
 
-**Big O:** *O(nk) Note: because of how computers store numbers in memory, radix sort is theoretically O(n log n)*
+**Big O:** *O(n \* k) Note: because of how computers store numbers in memory, radix sort is theoretically O(n log n)*
 
 *Source: [Efficiency](https://en.wikipedia.org/wiki/Radix_sort#Efficiency)*
 
+[TOC]
+
+# Data Structures
+
+**Data structure** is a particular way of organizing *data* so that it can be used efficiently
+
+## Linked Lists
+
+A data structure that contains a **head**, **tail** and **length** property.
+
+Linked Lists consist of nodes, and each **node** has a **value** and a **pointer** to another node or null
+
+[Useful Slides](https://cs.slides.com/colt_steele/singly-linked-lists#/)
+
+### Singly Linked Lists
+
+- Singly Linked Lists are an excellent alternative to arrays when **insertion** and **deletion** at the beginning are frequently required
+- Arrays contain a built in index whereas Linked Lists do not
+- The idea of a list data structure that consists of nodes is the foundation for other data structure like **Stacks** and **Queues**
+
+------
+
+#### Push
+
+Adding a new **node** to the end of the Linked List
+
+**Big O: ** *O(1)*
+
+**Pseudocode**
+
+```
+1. This function should accept a value
+2. Create a new node using the value passed to the function
+3. If there is no head property on the list, set the head and tail to be the newly created node
+4. Otherwise set the next property on the tail to be the new node and set the tail property on the list to be the newly created node
+5. Increment the length by one
+6. Return the linked list
+```
+
+------
+
+#### Pop
+
+Removing a **node** from the end of the Linked List
+
+**Big O: ** *O(n)*
+
+**Pseudocode**
+
+```
+1. If there are no nodes in the list, return undefined
+2. Loop through the list until you reach the tail
+3. Set the next property of the 2nd to last node to be null
+4. Set the tail to be the 2nd to last node
+5. Decrement the length of the list by 1
+6. Return the value of the node removed
+```
+
+------
+
+#### Shift
+
+Removing a **node** from the beginning of the Linked List
+
+**Big O: ** *O(1)*
+
+**Pseudocode**
+
+```
+1. If there are no nodes, return undefined
+2. Store the current head property in a variable
+3. Set the head property to be the current head's next property
+4. Decrement the length by 1
+5. Return the value of the node removed
+```
+
+------
+
+#### Unshift
+
+Adding a new **node** to the beginning of the Linked List
+
+**Big O: ** *O(1)*
+
+**Pseudocode**
+
+```
+1. This function should accept a value
+2. Create a new node using the value passed to the function
+3. If there is no head property on the list, set the head and tail to be the newly created node
+4. Otherwise set the newly created node's next property to be the current head property on the list
+5. Set the head property on the list to be that newly created node
+6. Increment the length of the list by 1
+7. Return the linked list
+```
+
+------
+
+#### Get
+
+Retrieving a **node** by it's position in the Linked List
+
+**Big O: ** *O(n)*
+
+**Pseudocode**
+
+```
+1. This function should accept an index
+2. If the index is less than zero or greater than or equal to the length of the list, return null
+3. Loop through the list until you reach the index and return the node at that specific index
+```
+
+------
+
+#### Set
+
+Changing the **value** of a node based on it's position in the Linked List
+
+**Big O: ** *O(n)*
+
+**Pseudocode**
+
+```
+1. This function should accept a value and an index
+2. Use your .get() function to find the specific node
+3. If the node is not found, return false
+4. If the node is found, set the value of that node to be the value passed to the function and return true
+```
+
+------
+
+#### Insert
+
+Adding a node to the Linked List at a **specific** position
+
+**Big O: ** *O(n)*
+
+**Pseudocode**
+
+```
+1. Define a function that accept an index and value
+2. If the index is less than zero or greater than the length, return false
+3. If the index is the same as the length, push a new node to the end of the list
+4. If the index is 0, unshift a new node to the start of the list
+5. Otherwise, using the .get() method, access the node at the index - 1
+6. Set the next property on that node to be the new node
+7. Set the next property on the new node to be the previous next
+8. Increment the length
+9. Return true
+```
+
+------
+
+#### Remove
+
+Removing a node from the Linked List at a **specific** position
+
+**Big O: ** *O(n)*
+
+**Pseudocode**
+
+```
+1. Define a function that accepts an index
+2. If the index is less than zero or greater than or equal to the length, return undefined
+3. If the index is the same as the length - 1, use .pop()
+4. If the index is 0, use .shift()
+5. Otherwise, using the .get() method, access the node at the index - 1
+6. Set the next property on that node to be the next of the next node
+7. Decrement the length
+8. Return the value of the node removed
+```
+
+------
+
+#### Reverse
+
+Reversing the Linked List **in place**
+
+[Useful Slides](https://cs.slides.com/colt_steele/singly-linked-lists#/29)
+
+**Big O: ** *O(n)*
+
+**Pseudocode**
+
+```
+1. Swap the head and tail
+2. Create a variable called next
+3. Create a variable called prev
+4. Create a variable called node and initalize it to the head property
+5. Loop through the list
+6. Set next to be the next property on whatever node is
+
+```
+
+------
+
+### Doubly Linked List
+
+**Almost** identical to Singly Linked Lists, except every node has another pointer, to the previous node!
+
+Doubly Linked List will be *more flexible* compare to Singly Linked List at the cost of using *more memory*
+
+------
+
+#### Push
+
+Adding a node to the **end** of the Doubly Linked List
+
+**Big O: ** *O(1)*
+
+**Pseudocode**
+
+```
+1. Create a new node with the value passed to the function
+2. If the head is property is null set the head and tail to be the newly created node
+3. If not, set the next property on the tail to be that node
+4. Set the previous property on the newly created node to be the tail
+5. Set the tail to be the newly created node
+6. Increment the length
+7. Return the Doubly Linked List
+```
+
+------
+
+#### Pop
+
+Removing a node from the **end** of the Doubly Linked List
+
+**Big O: ** *O(1)*
+
+**Pseudocode**
+
+```
+1. If there is no head, return undefined
+2. Store the current tail in a variable to return later
+3. If the length is 1, set the head and tail to be null
+4. Update the tail to be the previous Node
+5. Set the newTail's next to null
+6. Set oldTail's prev to null
+7. Decrement the length
+8. Return the value removed
+```
+
+------
+
+#### Shift
+
+Removing a node from the **beginning** of the Doubly Linked List
+
+**Big O: ** *O(1)*
+
+**Pseudocode**
+
+```
+1. If length is 0, return undefined
+2. Store the current head property in a variable (old head)
+3. If the length is 1, set the head and tail to be null
+4. Update the head to be the next of the old head
+5. Set the head's prev property to null
+6. Set the old head's next to null
+7. Decrement the length
+8. Return old head
+```
+
+------
+
+#### Unshift
+
+Adding a node to the **beginning** of the Doubly Linked List
+
+**Big O: ** *O(1)*
+
+**Pseudocode**
+
+```
+1. Create a new node with the value passed to the function
+2. If the length is 0, set the head and tail to be new node
+3. Otherwise
+	- Set the prev property on the head of the list to
+	be the new node
+	- Set the next property on the new node to be the
+	head property
+	- Update the head to be the new node
+4. Increment the length
+5. Return the list
+```
+
+------
+
+#### Get
+
+Accessing a node in a Doubly Linked List by it's position
+
+**Big O: ** *O(n/2)*
+
+**Pseudocode**
+
+```
+1. If the index is less than 0 or greater or equal to the length, return null
+2. If the index is less than or equal to half the length of the list
+	- Loop through the list starting from the head and
+	loop towards the middle
+	- Return the node once it is found
+3. If the index is greater than half the length of the list
+	- Loop through the list starting from the tail and
+	loop towards the middle
+	- Return the node once it is found
+```
+
+------
+
+#### Set
+
+Replacing the value of a specified node in a Doubly Linked List
+
+**Big O: ** *O(n/2)*
+
+**Pseudocode**
+
+```
+1. Create a variable which is the result of the .get() method at the index passed to the function
+	- If the .get() method returns a valid node, set
+	the value of that node to be the value passed to the 
+	function
+	- Return true
+2. Otherwise, return false
+```
+
+------
+
+#### Insert
+
+Adding a node in a Doubly Linked List by a certain position
+
+**Big O: ** *O(1)*
+
+**Pseudocode**
+
+```
+1. If the index is less than zero or greater than or equal to the length, return false
+2. If the index is 0, unshift
+3. If the index is the same as the length, push
+4. Use the .get() method to access the index - 1
+5. Set the next and prev properties on the correct nodes to link everything together
+6. Increment the length
+7. Return true
+```
+
+------
+
+#### Remove
+
+Removing a node in a Doubly Linked List by a certain position
+
+**Big O: ** *O(1)*
+
+**Pseudocode**
+
+```
+1. If the index is less than zero or greater than or equal to the length, return undefined
+2. If the index is 0, shift
+3. If the index is equal to length - 1, pop
+4. Use .get() to retrieve the node to be removed
+5. Update the next and prev properties to remove the to be removed node from the list
+6. Set the next and prev to null on the removed node
+7. Decrement the length
+8. Return the removed node
+```
+
+------
+
+## Stacks
+
+A **LIFO** data structure
+The last element added to the stack will be the first one to be removed
