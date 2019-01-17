@@ -866,6 +866,8 @@ A data structure that contains a **head**, **tail** and **length** property.
 
 Linked Lists consist of nodes, and each **node** has a **value** and a **pointer** to another node or null
 
+<Lists are a linear>
+
 [Useful Slides](https://cs.slides.com/colt_steele/singly-linked-lists#/)
 
 ### Singly Linked Lists
@@ -1229,3 +1231,397 @@ Removing a node in a Doubly Linked List by a certain position
 
 A **LIFO** data structure
 The last element added to the stack will be the first one to be removed
+
+*Example usages:*
+
+- Managing function invocations (e.g. call stacks)
+- Undo / Redo
+- Routing (the history object, e.g. browser history)
+
+**Big O:** 
+
+```
+Insertion - O(1)
+Removal - O(1)
+Searching - O(n)
+Access - O(n)
+```
+
+## Queue
+
+A **FIFO** data structure
+The first element added to the queue will be the first one to be removed
+
+*Example usages:*
+
+- Background tasks
+- Uploading resources
+- Printing / Task processing
+
+**Big O:** 
+
+```
+Insertion - O(1)
+Removal - O(1)
+Searching - O(n)
+Access - O(n)
+```
+
+------
+
+## Trees
+
+A data structure that consists of nodes in a **parent / child** relationship
+
+<Trees are nonlinear>
+
+*Examples*
+
+- *HTML DOM*
+- *Network Routing*
+- *Abstract syntax tree*
+- *Artificial Intelligence - Decision Tree*
+- *Folders in Operating system - File system*
+
+[Useful Slides](https://cs.slides.com/colt_steele/trees#/)
+
+- **Root** - The top node in a tree
+- **Child** - A node directly connected to another node when moving away from the Root
+- **Parent** - The converse notion of a child
+- **Siblings** - A group of nodes with the same parents
+- **Leaf** - A node with no children
+- **Edge** - The connection between one node and another
+
+------
+
+### Binary Search Tree
+
+- Every parent node has at most **two children**
+- Every node to the left of a parent node is **always less** than the parent
+- Every node to the right of a parent node is **always greater** than the parent
+
+------
+
+#### Insert
+
+**Big O:** *O(log n) - O(n) when tree is one sided like a linked list* 
+
+**Pseudocode**
+
+```
+1. Create a new node
+2. Starting at the root
+	A. Chceck if there is a root, if not - the root now becomes the new node
+	B. If there is a root, check if the value of the new node is greater than or less than the value of the root
+	C. If it is greater
+		- Check to see if there is a node to the right
+			- If there is, move to that node and repeat these steps
+			- If there is not, add that node as the right property
+	D. If it is less
+		- Check to see if there is a node to the left
+			- If there is, move to that node and repeat these steps
+			- If there is not, add that node as the left property
+```
+
+------
+
+#### Find
+
+**Big O:** *O(log n) - O(n) when tree is one sided like a linked list* 
+
+**Pseudocode**
+
+```
+1. Starting at the root
+	A. Check if there is a root, if not return false
+	B. If there is a root, check if the value of the new node is the value we're looking for
+		- If found, return true
+	C. If not, check to see if thte value is greater than or less than the value of the root
+	D. If it is greater
+		- Check to see if there is a node to the right
+			-- If there is, move to that node and repeat these steps
+			-- If there is not, return false
+	E. If it is less
+		- Check to see if there is a node to the left
+			-- If there is, move to that node and repeat these steps
+			-- If there is not, return false
+```
+
+------
+
+### Tree Traversal
+
+Going through each of the nodes in a tree data structure
+
+------
+
+#### Breadth First Search →
+
+Visit all sibling nodes before visiting their children nodes
+
+**Implementation**
+
+```
+Iterative solution
+1. Create a queue and a variable to store the values of nodes visited
+2. Place the root node in the queue
+3. Loop as long as there is anything in the queue
+	- Dequeue a node from the queue and push the value of the node into the variable that stores the node
+	- If there is a left property on the node, dequeued - add it to the queue
+	- If there is a right property on the node, dequeue - add it to the queue
+4. Return the variable that stores the values
+```
+
+------
+
+#### Depth First Search ↓
+
+Traverse vertically down to the end of the tree before visiting next sibling nodes
+
+------
+
+###### DFS - PreOrder
+
+Collect from Top to Bottom
+
+*Advantage: Get a structured copy of the tree, used to export & reconstruct*
+
+**Implementation**
+
+```javascript
+// Depth First Search
+  preOrder() {
+    var visited = [];
+    (function traverse(node) {
+      visited.push(node.val);
+      if (!node.left && !node.right) return;
+      if (node.left) {
+        traverse(node.left);
+      }
+      if (node.right) {
+        traverse(node.right);
+      }
+    }(this.root));
+    return visited;
+  } // End of PreOrder
+```
+
+------
+
+######  DFS - PostOrder
+
+Collect from Bottom Left - Bottom Right to Top
+
+**Implementation**
+
+```javascript
+postOrder() {
+    var visited = [];
+    (function traverse(node) {
+      if (node.left) traverse(node.left);
+      if (node.right) traverse(node.right);
+      visited.push(node.val);
+    }(this.root));
+    return visited;
+  }
+```
+
+######  DFS - InOrder
+
+Collection from bottom left to bottom right (sorted)
+
+*Advantage: Get a sorted list of the tree*
+
+**Implementation**
+
+```javascript
+inOrder() {
+      var visited = [];
+      (function traverse(node) {
+        if (node.left) traverse(node.left);
+        visited.push(node.val);
+        if (node.right) traverse(node.right);
+      }(this.root));
+      return visited;
+    }
+```
+
+### Binary Heap
+
+**Very** similar to a binary search tree, but with some different rules!
+
+In a **MaxBinaryHeap,** parent nodes are always larger than child nodes. In a **MinBinaryHeap,** parent nodes are always smaller than child nodes
+
+Binary Heaps are used to implement Priority Queues, which are **very** commonly used data structures
+
+They are also used quite a bit, with **graph traversal** algorithms
+
+##### Storing Heaps in Array
+
+- For any index of an array `n` ...
+- The **left** child is stored at `2n + 1`
+- The **right** child is stored at `2n + 2`
+- For any index of a child: It's parent is at index `Math.floor((n - 1) / 2)`
+
+**Big O:** 
+
+```
+Insertion - O(log n)
+Removal - O(log n)
+Search - O(n)
+```
+
+------
+
+##### Max Binary Heap
+
+- Each parent has at most two child nodes
+- The value of each parent node is **always **greater than its child nodes
+- In a max Binary Heap, the parent is greater than the children, but there are no guarantees between sibling nodes
+- A binary heap is as compact as possible. All the children of each node are as full as they can be and **left children are filled out first**
+
+###### Insert
+
+- Add to the end
+- Bubble up
+
+**Pseudocode**
+
+```
+1. Push the value into the values property on the heap
+2. Bubble the value up to its correct spot by comparing it to it's parent node
+```
+
+------
+
+###### Remove
+
+- Remove the root
+
+- Replace with the most recently added
+
+- Adjust (Sink down)
+
+[TOC]
+
+# Priority Queue
+
+A data structure where each element has a priority. Elements with higher priorities are served before elements with lower priorities
+
+![Priority Queue in an ER](https://puu.sh/CxSmV/2885bdc827.png)
+
+**Implementation**
+
+```
+1. Write a Min Binary Heap - loewr number means higher priority
+2. Each Node has a value and a priority number. Use the priority to build the heap
+3. Enqueue() method accepts a value and priority, make a new node, and put it in the right spot base off of it's priority
+4. Dequeue() methid removes root element, returns it, and rearranges heap using priority
+```
+
+# Hash Tables
+
+Hash tables are used to store *key-value* pairs.
+They are like arrays, but keys are not ordered.
+
+Unlike arrays, has tables are fast for all of the following operations:
+
+- finding values
+- adding new values
+- removing values
+
+**Big O**
+
+```
+Insertion - O(1)
+Deletion - O(1)
+Access - O(1)
+```
+
+
+
+## Hashing function
+
+Adding in a prime number is usually good in making the hash function output more distributed results
+
+A good hash should be fast, distribute keys uniformly, and be deterministic (same input should yield the same output every time)
+
+## Collisions Handling
+
+------
+
+#### Separate Chaining
+
+With separate chaining, at each index in our array we store values using a more sophisticated data structure (e.g. an array or a linked list)
+
+This allows us to store multiple key-value pairs at the same index
+![Hash Table - Separate Chaining](https://puu.sh/CxMPL/fd7ecd51c0.png)
+
+Simply loop through the nested array to find 'Salmon'
+
+------
+
+#### Linear Probing
+
+With linear probing, when we find a collision, we search through the array to find the next empty slot
+
+Unlike with separate chaining, this allow us to store a single key-value at each index
+
+![Hash Table - Linear Probing](https://puu.sh/CxMSF/06ae28cb9e.png)
+
+# Graph
+
+[Useful Slides](https://cs.slides.com/colt_steele/graphs#/)
+
+![Graph](https://puu.sh/CxOff/df1988f0b0.png)
+
+Graphs can be use for:
+
+- Social Networks
+- Location / Mapping
+- Routing Algorithms
+- Visual Hierarchy
+- File System Optimizations
+- Recommendations engine (People also watched, also bought, etc)
+- **EVERYWHERE!**
+
+**Understanding Graphs**
+
+- **Vertex** - a node
+- **Edge** - connection between nodes
+- **Weighted/Unweighted** - values assigned to distances between vertices
+- **Directed/Undirected** - directions assigned to distanced between vertices
+
+## Undirected Graph
+
+Two way connection, like Facebook friends (e.g. user A can see user B's page and user B can see user A's page)
+
+![Undirected Graph](https://puu.sh/CxSiG/c1e266761b.png)
+
+A good example better shown below
+
+![Facebook Friends Graph](https://puu.sh/CxSp0/f8a2476c7d.png)
+
+## Directed Graph
+
+Contains a direction, like a one-way street as oppose to undirected graph that acts as a two way street
+
+![Directed Graph](https://puu.sh/CxSks/02c70dae3e.png)
+
+An example would be like how Instagram following works
+
+![Instagram Followers Graph](https://puu.sh/CxSqD/00a5c85c49.png)
+
+## Weighted Graph
+
+When values are assigned to the edges(connections), it becomes a weighted graph
+
+![Weighted Graph](https://puu.sh/CxSuI/4187490599.png)
+
+A good example would be locations from point Town A to Town B requires 8km of distance
+
+## Unweighted Graph
+
+An unweighted graph is just a graph without any value attached to the edges(connections)	
+
+![Unweighted Graph](https://puu.sh/CxSyS/fff4c1aa57.png)
