@@ -1734,3 +1734,115 @@ A good example would be locations from point Town A to Town B requires 8km of di
 An unweighted graph is just a graph without any value attached to the edges(connections)	
 
 ![Unweighted Graph](https://puu.sh/CxSyS/fff4c1aa57.png)
+
+## Adjacency Matrix
+
+Using a matrix to store the connection between vertices
+
+![Adjacency Matrix](https://puu.sh/CxUE4/ed01615020.png)
+
+## Adjacency List
+
+Could be stored on a hash table with the value being an array of all the connected vertices
+
+![Adjacency List](https://puu.sh/CxUK4/9f3acc32ba.png)
+
+## Adjacency List vs Adjacency Matrix
+
+![AList vs AMatrix](https://puu.sh/CxUQN/ce5ce28ede.png)
+
+![vs](https://puu.sh/CxUV5/c571d89dcf.png)
+
+### Adding A Vertex
+
+**Implementation**
+
+```
+1. Write a method called addVertex, which accepts a name of a vertex
+2. It should add a key to the adjacency list with the name of the vertex and set its value to be an empty array
+```
+
+### Adding An Edge
+
+**Implementation**
+
+```
+
+```
+
+## Graph Traversal
+
+[Useful Slides](https://cs.slides.com/colt_steele/graphs#/44)
+
+*Example Uses:*
+
+- Peer to peer networking
+- Web crawlers
+- Finding "closest" matches / recommendations
+- Shortest path problems
+  - GPS Navigation
+  - Solving mazes
+  - AI (shortest path to win the game)
+
+### Depth First  Graph Traversal
+
+# Dijkstra's Shortest Path Algorithm
+
+# Dynamic Programming
+
+A method for solving a complex problem by breaking it down into a collection of simpler subproblems, solving each of those subproblems just once, and storing their solutions
+
+*Dynamic programming only works on problem with:*
+
+- Optimal Substructure
+- Overlapping Subproblems
+
+"Using past knowledge to make solving a future problem easier"
+
+## Overlapping Subproblems
+
+A problem is said to have **overlapping subproblems** if it can be broken down into subproblems which are reused several times
+
+*Example:*
+
+- Fibonacci Sequence
+
+![Overlapping subproblem](https://puu.sh/CBeWU/6c9ee0ddb4.png)
+
+But
+
+![Not overlapping subproblem](https://puu.sh/CBf1m/257221da22.png)
+
+## Optimal Substructure
+
+A problem is said to have **optimal substructure** if an optimal solution can be constructed from optimal solutions of its subproblems
+
+![](https://puu.sh/CBfv0/fa6fc3b988.png)
+
+## Memoization
+
+Storing the results of expensive function calls and returning the cached result when the same input occur again
+
+![](https://puu.sh/CBgu8/ec369a8960.png)
+
+## Tabulation
+
+Storing the result of a previous result in a "table" (usually an array)
+
+Usually done using **iteration**
+
+Better **space complexity** can be achieved using tabluation
+
+![](https://puu.sh/CBh5O/3043baf951.png)
+
+```javascript
+function fib(n) {
+    if(n <= 2) return 1;
+    var fibNums = [0,1,1];
+    for(var i = 3; i <= n; i++) {
+        fibNums[i] = fibNums[i-1] + fibNums[i-2];
+    }
+    return fibNums[n];
+}
+```
+
